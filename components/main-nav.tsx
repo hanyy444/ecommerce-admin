@@ -1,9 +1,23 @@
 "use client";
 
+import React, { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
-import React from "react";
+
+import { PopoverContent } from "@radix-ui/react-popover";
+import { Button } from "@/components/ui/button";
+import {
+  Command,
+  CommandGroup,
+  CommandItem,
+  CommandList,
+} from "./ui/command";
+import {
+  Popover,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { MenuIcon } from "lucide-react";
 
 export default function MainNav({
   className,
@@ -11,6 +25,31 @@ export default function MainNav({
 }: React.HTMLAttributes<HTMLElement>) {
   const pathName = usePathname();
   const params = useParams();
+  const [open, setOpen] = useState(false);
+
+  const [isTablet, setIsTablet] = useState(
+    window?.matchMedia("(max-width: 932px)").matches
+  );
+
+  useEffect(() => {
+    // Function to handle window? resize
+    const handleWindowResize = () => {
+      setIsTablet(
+        window?.matchMedia("(max-width: 932px)").matches
+      );
+    };
+
+    // Attach the event listener
+    window?.addEventListener("resize", handleWindowResize);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window?.removeEventListener(
+        "resize",
+        handleWindowResize
+      );
+    };
+  }, []);
 
   const routes = [
     {
@@ -55,27 +94,72 @@ export default function MainNav({
     },
   ];
 
+  const navLinks = routes.map((route) => (
+    <Link
+      key={route.href}
+      href={route.href}
+      className={cn(
+        "text-sm font-medium transition-colors hover:text-primary",
+        route.active
+          ? "text-black dark:text-white"
+          : "text-muted-foreground"
+      )}
+    >
+      {route.label}
+    </Link>
+  ));
+
+  const HamMenu = () => {
+    return (
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            size="sm"
+            variant="outline"
+            aria-expanded={open}
+          >
+            <MenuIcon className="cursor-pointer" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-[200px] p-2 z-50">
+          <Command>
+            <CommandList>
+              <CommandGroup>
+                {routes.map((route) => (
+                  <CommandItem
+                    key={route.label}
+                    onSelect={() => setOpen(false)}
+                  >
+                    <Link
+                      key={route.href}
+                      href={route.href}
+                      className={cn(
+                        "text-sm font-medium transition-colors hover:text-primary w-full",
+                        route.active
+                          ? "text-black dark:text-white"
+                          : "text-muted-foreground"
+                      )}
+                    >
+                      {route.label}
+                    </Link>
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
+    );
+  };
+
   return (
     <nav
       className={cn(
-        "flex items-center space-x-4 lg:space-x-6",
+        "flex items-center justify-end flex-1 space-x-4 lg:space-x-6",
         className
       )}
     >
-      {routes.map((route) => (
-        <Link
-          key={route.href}
-          href={route.href}
-          className={cn(
-            "text-sm font-medium transition-colors hover:text-primary",
-            route.active
-              ? "text-black dark:text-white"
-              : "text-muted-foreground"
-          )}
-        >
-          {route.label}
-        </Link>
-      ))}
+      {isTablet ? <HamMenu /> : navLinks}
     </nav>
   );
 }
