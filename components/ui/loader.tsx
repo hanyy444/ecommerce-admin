@@ -3,12 +3,12 @@ import React from "react";
 const Loader = () => {
   return (
     <div
-      className="text-center flex items-center justify-center h-full overflow-hidden"
+      className="text-center flex items-center justify-center h-[90%] overflow-hidden"
       role="status"
     >
       <svg
         aria-hidden="true"
-        className="inline w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-gray-600"
+        className="inline w-8 h-8 text-blue-200 animate-spin dark:text-blue-200 fill-gray-600"
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

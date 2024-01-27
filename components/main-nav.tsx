@@ -28,23 +28,23 @@ export default function MainNav({
   const [open, setOpen] = useState(false);
 
   const [isTablet, setIsTablet] = useState(
-    window?.matchMedia("(max-width: 932px)").matches
+    window.matchMedia("(max-width: 932px)").matches
   );
 
   useEffect(() => {
     // Function to handle window? resize
     const handleWindowResize = () => {
       setIsTablet(
-        window?.matchMedia("(max-width: 932px)").matches
+        window.matchMedia("(max-width: 932px)").matches
       );
     };
 
     // Attach the event listener
-    window?.addEventListener("resize", handleWindowResize);
+    window.addEventListener("resize", handleWindowResize);
 
     // Cleanup the event listener on component unmount
     return () => {
-      window?.removeEventListener(
+      window.removeEventListener(
         "resize",
         handleWindowResize
       );
