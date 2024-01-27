@@ -129,12 +129,14 @@ export default function MainNav({
                   <CommandItem
                     key={route.label}
                     onSelect={() => setOpen(false)}
+                    className="p-0"
                   >
                     <Link
                       key={route.href}
                       href={route.href}
                       className={cn(
-                        "text-sm font-medium transition-colors hover:text-primary w-full",
+                        `text-sm font-medium transition-colors
+                        hover:text-primary w-full h-full p-2`,
                         route.active
                           ? "text-black dark:text-white"
                           : "text-muted-foreground"
