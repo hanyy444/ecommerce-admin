@@ -24,7 +24,7 @@ The dashboard server provides an endpoint for stores to consume, allowing them t
 
 ## Technologies
 
-- [Next.js](https://github.com/vitejs/vite/releases)
+- [Next.js](https://nextjs.org/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [Prisma ORM](https://www.prisma.io/)
 - [Shadcn/ui - UI library](https://ui.shadcn.com/)
