@@ -4,7 +4,9 @@ import { NextResponse } from "next/server";
 
 export async function GET(
   req: Request,
-  { params }: { params: { categoryId: string } }
+  {
+    params,
+  }: { params: { categoryId: string; storeId: string } }
 ) {
   try {
     if (!params.categoryId) {
@@ -16,6 +18,7 @@ export async function GET(
     const category = await prismadb.category.findUnique({
       where: {
         id: params.categoryId,
+        storeId: params.storeId,
       },
       include: {
         billboard: true,
@@ -39,6 +42,7 @@ export async function PATCH(
 ) {
   try {
     const { userId } = auth();
+
     const body = await req.json();
 
     const { name, billboardId } = body;

@@ -11,7 +11,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import prismadb from "@/lib/prismadb";
 import { formatter } from "@/lib/utils";
 import {
   CreditCard,
@@ -26,12 +25,6 @@ interface DashboardPageProps {
 const DashboardPage: React.FC<DashboardPageProps> = async ({
   params,
 }) => {
-  const store = await prismadb.store.findFirst({
-    where: {
-      id: params.storeId,
-    },
-  });
-
   const totalRevenue = await getTotalRevenue(
     params.storeId
   );

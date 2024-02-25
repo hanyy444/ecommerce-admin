@@ -21,6 +21,7 @@ export async function POST(
       images,
       isFeatured,
       isArchived,
+      stock,
     } = body;
 
     if (!userId) {
@@ -65,6 +66,12 @@ export async function POST(
       });
     }
 
+    if (!stock) {
+      return new NextResponse("Product stock is required", {
+        status: 400,
+      });
+    }
+
     if (!params.storeId) {
       return new NextResponse("Store Id is required", {
         status: 400,
@@ -88,6 +95,7 @@ export async function POST(
       data: {
         name,
         price,
+        stock,
         categoryId,
         colorId,
         sizeId,
@@ -103,6 +111,7 @@ export async function POST(
         isFeatured,
         isArchived,
         storeId: params.storeId,
+        
       },
     });
 

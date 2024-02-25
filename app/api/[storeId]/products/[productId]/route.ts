@@ -4,9 +4,20 @@ import { NextResponse } from "next/server";
 
 export async function GET(
   req: Request,
-  { params }: { params: { productId: string } }
+  { params }: { 
+    params: { 
+      productId: string, 
+      storeId: string 
+    } 
+  }
 ) {
   try {
+    if (!params.storeId) {
+      return new NextResponse("Store id is required.", {
+        status: 400,
+      });
+    }
+    
     if (!params.productId) {
       return new NextResponse("Product id is required.", {
         status: 400,
@@ -16,6 +27,7 @@ export async function GET(
     const product = await prismadb.product.findUnique({
       where: {
         id: params.productId,
+        storeId: params.storeId,
       },
       include: {
         images: true,
@@ -53,6 +65,7 @@ export async function PATCH(
       images,
       isFeatured,
       isArchived,
+      stock
     } = body;
 
     if (!userId) {
@@ -97,6 +110,12 @@ export async function PATCH(
       });
     }
 
+    if (!stock) {
+      return new NextResponse("Stock is required", {
+        status: 400,
+      });
+    }
+
     if (!params.storeId) {
       return new NextResponse("Store Id is required", {
         status: 400,
@@ -137,8 +156,10 @@ export async function PATCH(
         },
         isFeatured,
         isArchived,
+        stock
       },
     });
+
     // NOTE: ???
     const product = await prismadb.product.update({
       where: {
@@ -190,7 +211,6 @@ export async function DELETE(
     const storeByUserId = await prismadb.store.findFirst({
       where: {
         id: params.storeId,
-        userId,
       },
     });
 

@@ -18,6 +18,12 @@ const nextConfig = {
                 "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version",
         },
     ],
+    // rewrites: async () => {
+    //     return [{
+    //         source: '/api/:path*',
+    //         destination: 'http://localhost3001/:path*',
+    //     }]
+    // },
 }
 
 module.exports = nextConfig
